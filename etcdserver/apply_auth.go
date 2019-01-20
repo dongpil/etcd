@@ -174,6 +174,9 @@ func (aa *authApplierV3) LeaseRevoke(lc *pb.LeaseRevokeRequest) (*pb.LeaseRevoke
 }
 
 func (aa *authApplierV3) checkLeasePuts(leaseID lease.LeaseID) error {
+	if !aa.as.IsAuthEnabled() {
+		return nil
+	}
 	lease := aa.lessor.Lookup(leaseID)
 	if lease != nil {
 		for _, key := range lease.Keys() {
